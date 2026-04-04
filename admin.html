@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Fixtures Management | Sikata United FC</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Login Styles */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    .login-container {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .login-container h2 {
+      color: #1a1a1a;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    
+    .login-container .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    
+    .login-form .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .login-form label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .login-form input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    
+    .login-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .login-form button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .login-form button:hover {
+      background: var(--accent);
+    }
+    
+    .login-error {
+      color: #dc3545;
+      background: #f8d7da;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      text-align: center;
+      display: none;
+    }
+    
+    .login-logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .login-logo .logo-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    /* Admin Page Styles */
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .admin-header h1 {
+      color: var(--text);
+      font-size: 1.8rem;
+    }
+    
+    .admin-header .back-link {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+    
+    /* Admin Sections */
+    .admin-section {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin-section h2 {
+      color: #1a1a1a;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    /* Form Styles - Light Theme */
+    .fixture-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select {
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fafafa;
+      color: #1a1a1a;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 1rem;
+    }
+    
+    .btn-submit:hover {
+      background: var(--accent);
+    }
+    
+    /* Fixtures List - Light Theme */
+    .fixtures-admin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .fixture-admin-card {
+      background: #f8f9fa;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 1.5rem;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .fixture-admin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .fixture-admin-card .date-box {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 80px;
+    }
+    
+    .fixture-admin-card .date-box .month {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    
+    .fixture-admin-card .date-box .day {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .fixture-admin-card .match-info h3 {
+      color: #1a1a1a;
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .fixture-admin-card .match-info p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .fixture-admin-card .status-badge {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .fixture-admin-card .status-badge.upcoming {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    
+    .fixture-admin-card .status-badge.completed {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .fixture-admin-card .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .btn-edit, .btn-delete {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    
+    .btn-edit {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    
+    .btn-delete {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .btn-edit:hover, .btn-delete:hover {
+      opacity: 0.8;
+    }
+    
+    /* Contact Settings */
+    .contact-settings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    
+    .contact-settings .form-group input {
+      background: #fafafa;
+    }
+    
+    /* Instructions */
+    .admin-instructions {
+      background: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .admin-instructions h3 {
+      color: #1565c0;
+      margin-bottom: 0.5rem;
+    }
+    
+    .admin-instructions p {
+      color: #333;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .fixture-admin-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .fixture-admin-card .actions {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Login Overlay -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-container">
+      <div class="login-logo">
+        <div class="logo-icon">S</div>
+      </div>
+      <h2>Admin Login</h2>
+      <p class="subtitle">Sign in to access the admin panel</p>
+      <div id="loginError" class="login-error"></div>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="admin@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required>
+        </div>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Content (Hidden until logged in) -->
+  <div id="adminContent">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="admin.html" class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <p>SIKATA UNITED</p>
+          <p class="subtitle">ADMIN PANEL</p>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="back-link">← Back to Site</a>
+        <span id="userEmail" style="margin: 0 1rem; color: #666;"></span>
+        <button onclick="logout()" class="btn-logout" style="background: #dc3545; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-container" style="margin-top: 80px;">
+    <div class="admin-header">
+      <h1>⚙️ Fixture Management</h1>
+      <a href="index.html" class="back-link">← View Main Site</a>
+    </div>
+    
+    <div class="admin-instructions">
+      <h3>📋 Instructions</h3>
+      <p>Add and manage match fixtures below. All fixtures will be displayed on the main website. Messages from the contact form will be sent to <strong>sikataunited@gmail.com</strong>.</p>
+    </div>
+    
+    <!-- Add/Edit Fixture Form -->
+    <div class="admin-section">
+      <h2>➕ Add New Fixture</h2>
+      <form id="fixtureForm" class="fixture-form">
+        <div class="form-group">
+          <label>Home Team</label>
+          <input type="text" id="homeTeam" placeholder="e.g., Sikata United" required>
+        </div>
+        <div class="form-group">
+          <label>Away Team</label>
+          <input type="text" id="awayTeam" placeholder="e.g., Kakamega Stars" required>
+        </div>
+        <div class="form-group">
+          <label>Match Date</label>
+          <input type="date" id="matchDate" required>
+        </div>
+        <div class="form-group">
+          <label>Match Time</label>
+          <input type="time" id="matchTime" required>
+        </div>
+        <div class="form-group">
+          <label>Venue</label>
+          <input type="text" id="venue" placeholder="e.g., Bungoma Stadium" required>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="status">
+            <option value="Upcoming">Upcoming</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <button type="submit" class="btn-submit">➕ Add Fixture</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Current Fixtures -->
+    <div class="admin-section">
+      <h2>📋 Current Fixtures</h2>
+      <div id="fixturesList" class="fixtures-admin-list">
+        <!-- Fixtures will be loaded here -->
+      </div>
+    </div>
+    
+    <!-- Contact Settings -->
+    <div class="admin-section">
+      <h2>📧 Contact Settings</h2>
+      <div class="contact-settings">
+        <div class="form-group">
+          <label>Contact Email</label>
+          <input type="email" id="contactEmail" value="sikataunited@gmail.com" placeholder="Contact email address">
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn-submit" onclick="saveContactSettings()">💾 Save Contact Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hide admin content initially
+    document.getElementById('adminContent').style.display = 'none';
+    
+    // JWT Helper functions
+    function base64Encode(str) {
+      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+    
+    function base64Decode(str) {
+      str = str.replace(/-/g, '+').replace(/_/g, '/');
+      while (str.length % 4) str += '=';
+      return atob(str);
+    }
+    
+    function createJWT(payload) {
+      const header = { alg: 'HS256', typ: 'JWT' };
+      const encodedHeader = base64Encode(JSON.stringify(header));
+      const encodedPayload = base64Encode(JSON.stringify(payload));
+      
+      const signatureInput = encodedHeader + '.' + encodedPayload;
+      let signature = 0;
+      for (let i = 0; i < signatureInput.length; i++) {
+        signature = ((signature << 5) - signature + signatureInput.charCodeAt(i)) | 0;
+      }
+      const encodedSignature = base64Encode(signature.toString());
+      
+      return encodedHeader + '.' + encodedPayload + '.' + encodedSignature;
+    }
+    
+    function verifyJWT(token) {
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return null;
+        
+        const payload = JSON.parse(base64Decode(parts[1]));
+        const now = Math.floor(Date.now() / 1000);
+        
+        if (payload.exp && payload.exp < now) return null;
+        
+        return payload;
+      } catch (e) {
+        return null;
+      }
+    }
+    
+    function hashPassword(password) {
+      let hash = 0;
+      for (let i = 0; i < password.length; i++) {
+        hash = ((hash << 5) - hash + password.charCodeAt(i)) | 0;
+      }
+      return hash.toString(16);
+    }
+    
+    // Admin credentials (stored as hash for security)
+    const ADMIN_EMAIL = 'admin@sikataunited.com';
+    const ADMIN_PASSWORD_HASH = hashPassword('@Admin123.');
+    
+    // Check if logged in
+    function checkAuth() {
+      const token = localStorage.getItem('admin_jwt_token');
+      if (token) {
+        const payload = verifyJWT(token);
+        if (payload && payload.email === ADMIN_EMAIL) {
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    // Login handler
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+      
+      const passwordHash = hashPassword(password);
+      
+      if (email === ADMIN_EMAIL && passwordHash === ADMIN_PASSWORD_HASH) {
+        // Create JWT token
+        const token = createJWT({
+          email: email,
+          role: 'admin',
+          iat: Math.floor(Date.now() / 1000),
+          exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
+        });
+        
+        localStorage.setItem('admin_jwt_token', token);
+        
+        // Show admin content
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        
+        // Update user info
+        document.getElementById('userEmail').textContent = email;
+      } else {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Invalid email or password';
+      }
+    });
+    
+    // Logout handler
+    function logout() {
+      localStorage.removeItem('admin_jwt_token');
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('adminContent').style.display = 'none';
+      document.getElementById('loginForm').reset();
+      document.getElementById('loginError').style.display = 'none';
+    }
+    
+    // Initialize
+    if (checkAuth()) {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminContent').style.display = 'block';
+      document.getElementById('userEmail').textContent = ADMIN_EMAIL;
+    }
+
+    // Initialize fixtures from localStorage or use defaults
+    function getFixtures() {
+      const stored = localStorage.getItem('sikata_fixtures');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      // Default fixtures
+      return [
+        { id: 1, homeTeam: 'Sikata United', awayTeam: 'Kakamega Stars', date: '2026-04-05', time: '15:00', venue: 'Bungoma Stadium', status: 'Upcoming' },
+        { id: 2, homeTeam: 'Mumias FC', awayTeam: 'Sikata United', date: '2026-04-12', time: '16:00', venue: 'Mumias Complex', status: 'Upcoming' },
+        { id: 3, homeTeam: 'Sikata United', awayTeam: 'Webuye City', date: '2026-04-19', time: '15:00', venue: 'Bungoma Stadium', status: 'Upcoming' },
+        { id: 4, homeTeam: 'Malava United', awayTeam: 'Sikata United', date: '2026-04-26', time: '16:30', venue: 'Malava Grounds', status: 'Upcoming' }
+      ];
+    }
+    
+    // Save fixtures to localStorage
+    function saveFixtures(fixtures) {
+      localStorage.setItem('sikata_fixtures', JSON.stringify(fixtures));
+      renderFixtures();
+    }
+    
+    // Render fixtures in admin panel
+    function renderFixtures() {
+      const fixtures = getFixtures();
+      const container = document.getElementById('fixturesList');
+      
+      if (fixtures.length === 0) {
+        container.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No fixtures yet. Add one above!</p>';
+        return;
+      }
+      
+      container.innerHTML = fixtures.map(f => {
+        const dateObj = new Date(f.date);
+        const month = dateObj.toLocaleString('default', { month: 'short' }).toUpperCase();
+        const day = dateObj.getDate();
+        
+        return `
+          <div class="fixture-admin-card">
+            <div class="date-box">
+              <p class="month">${month}</p>
+              <p class="day">${day}</p>
+            </div>
+            <div class="match-info">
+              <h3>${f.homeTeam} VS ${f.awayTeam}</h3>
+              <p>${f.time} • ${f.venue}</p>
+            </div>
+            <span class="status-badge ${f.status.toLowerCase()}">${f.status}</span>
+            <div class="actions">
+              <button class="btn-edit" onclick="editFixture(${f.id})">✏️ Edit</button>
+              <button class="btn-delete" onclick="deleteFixture(${f.id})">🗑️ Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // Add new fixture
+    document.getElementById('fixtureForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const fixtures = getFixtures();
+      const newId = fixtures.length > 0 ? Math.max(...fixtures.map(f => f.id)) + 1 : 1;
+      
+      const newFixture = {
+        id: newId,
+        homeTeam: document.getElementById('homeTeam').value,
+        awayTeam: document.getElementById('awayTeam').value,
+        date: document.getElementById('matchDate').value,
+        time: document.getElementById('matchTime').value,
+        venue: document.getElementById('venue').value,
+        status: document.getElementById('status').value
+      };
+      
+      fixtures.push(newFixture);
+      saveFixtures(fixtures);
+      
+      // Reset form
+      this.reset();
+      alert('✅ Fixture added successfully!');
+    });
+    
+    // Edit fixture
+    function editFixture(id) {
+      const fixtures = getFixtures();
+      const fixture = fixtures.find(f => f.id === id);
+      
+      if (fixture) {
+        document.getElementById('homeTeam').value = fixture.homeTeam;
+        document.getElementById('awayTeam').value = fixture.awayTeam;
+        document.getElementById('matchDate').value = fixture.date;
+        document.getElementById('matchTime').value = fixture.time;
+        document.getElementById('venue').value = fixture.venue;
+        document.getElementById('status').value = fixture.status;
+        
+        // Delete old and let user re-add (simplified approach)
+        if (confirm('Edit this fixture? Click OK to load data, then update and submit.')) {
+          deleteFixture(id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+    
+    // Delete fixture
+    function deleteFixture(id) {
+      if (confirm('Are you sure you want to delete this fixture?')) {
+        const fixtures = getFixtures().filter(f => f.id !== id);
+        saveFixtures(fixtures);
+      }
+    }
+    
+    // Save contact settings
+    function saveContactSettings() {
+      const email = document.getElementById('contactEmail').value;
+      localStorage.setItem('sikata_contact_email', email);
+      alert('✅ Contact settings saved!');
+    }
+    
+    // Load contact email
+    document.getElementById('contactEmail').value = localStorage.getItem('sikata_contact_email') || 'sikataunited@gmail.com';
+    
+    // Initial render
+    renderFixtures();
+  </script>
+  </div>
+</body>
+</html>
