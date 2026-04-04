@@ -1233,3 +1233,108 @@ footer {
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE NAV PATCH — paste at the bottom of style.css
+   ═══════════════════════════════════════════════════════ */
+
+/* Show hamburger on mobile */
+@media (max-width: 768px) {
+
+  .mobile-menu-btn {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1001;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-menu-btn span {
+    display: block;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s, width 0.3s;
+    transform-origin: center;
+  }
+
+  .mobile-menu-btn span:nth-child(3) {
+    width: 60%;
+  }
+
+  /* Hamburger → X animation */
+  .mobile-menu-btn.menu-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .mobile-menu-btn.menu-open span:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-menu-btn.menu-open span:nth-child(3) {
+    width: 100%;
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Hide desktop nav links by default on mobile */
+  .nav-links {
+    display: none !important;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 10, 0.97);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 0;
+    z-index: 1000;
+    overflow-y: auto;
+    border-top: 2px solid #1a7a2e;
+  }
+
+  /* Show when toggled open */
+  .nav-links.nav-open {
+    display: flex !important;
+  }
+
+  .nav-links a,
+  .nav-links .dropbtn {
+    display: block;
+    width: 100%;
+    padding: 16px 28px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:active,
+  .nav-links .dropbtn:hover {
+    background: #1a7a2e;
+    padding-left: 36px;
+  }
+
+  /* Dropdown sub-links on mobile */
+  .nav-links .dropdown-content {
+    position: static !important;
+    display: block !important;
+    background: rgba(255,255,255,0.05) !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .nav-links .dropdown-content a {
+    padding-left: 44px !important;
+    font-size: 14px !important;
+    opacity: 0.8;
+  }
+}
