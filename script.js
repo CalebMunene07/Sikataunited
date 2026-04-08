@@ -1,12 +1,39 @@
-// ── Mobile navigation - Simple toggle ────────────────────────
+// ── Mobile navigation ────────────────────────────────────────
 function toggleMenu() {
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
-  }
+  const nav   = document.querySelector('.nav-links');
+  const btn   = document.querySelector('.mobile-menu-btn');
+  const open  = nav.classList.toggle('nav-open');
+
+  // Animate hamburger → X
+  btn.classList.toggle('menu-open', open);
+
+  // Prevent body scroll while menu is open
+  document.body.style.overflow = open ? 'hidden' : '';
 }
+
+// Close menu when any nav link is tapped
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.nav-links a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      document.querySelector('.nav-links').classList.remove('nav-open');
+      document.querySelector('.mobile-menu-btn').classList.remove('menu-open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Close on outside tap
+  document.addEventListener('click', function (e) {
+    const nav = document.querySelector('.nav-links');
+    const btn = document.querySelector('.mobile-menu-btn');
+    if (nav.classList.contains('nav-open') &&
+        !nav.contains(e.target) &&
+        !btn.contains(e.target)) {
+      nav.classList.remove('nav-open');
+      btn.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+  });
+});
 
 // ── Slideshow ────────────────────────────────────────────────
 (function () {
