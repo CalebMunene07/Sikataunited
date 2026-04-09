@@ -218,8 +218,15 @@ function Home() {
 
 // Gallery Page
 function Gallery() {
-  const [activeTab, setActiveTab] = useState<'photos' | 'videos'>('photos');
-  const [selectedVideo, setSelectedVideo] = useState<typeof videos[0] | null>(null);
+  const [activeTab, setActiveTab] = useState('photos');
+  const [selectedVideo, setSelectedVideo] = useState<{
+    id: number;
+    thumbnail: string;
+    title: string;
+    duration: string;
+    date: string;
+    videoUrl: string;
+  } | null>(null);
   
   const images = [
     'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800',
@@ -391,7 +398,6 @@ function Gallery() {
           onClick={() => setSelectedVideo(null)}
         >
           <div className="relative w-full max-w-4xl mx-4" onClick={e => e.stopPropagation()}>
-            {/* Close Button */}
             <button
               onClick={() => setSelectedVideo(null)}
               className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors"
@@ -400,8 +406,6 @@ function Gallery() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            
-            {/* Video Player */}
             <div className="bg-[#111] rounded-lg overflow-hidden">
               <video
                 src={selectedVideo.videoUrl}
@@ -411,8 +415,6 @@ function Gallery() {
               >
                 Your browser does not support the video tag.
               </video>
-              
-              {/* Video Info */}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-white mb-2">{selectedVideo.title}</h3>
                 <div className="flex items-center gap-4 text-white/60">
@@ -507,6 +509,10 @@ function Players() {
     { name: 'Dennis Barasa', number: 10, position: 'Forward', status: 'First Team' },
     { name: 'George Makokha', number: 11, position: 'Midfielder', status: 'First Team' },
     { name: 'Simon Kiptoo', number: 12, position: 'Goalkeeper', status: 'Reserve' },
+    { name: 'James Omondi', number: 13, position: 'Defender', status: 'Reserve' },
+    { name: 'Patrick Mwangi', number: 14, position: 'Midfielder', status: 'Reserve' },
+    { name: 'Kevin Otieno', number: 15, position: 'Forward', status: 'Reserve' },
+    { name: 'Brian Wabwire', number: 16, position: 'Defender', status: 'Reserve' },
   ];
 
   return (
@@ -664,62 +670,9 @@ function Support() {
 function Footer() {
   return (
     <footer className="py-12 border-t border-green-900/30 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <img src="/sikata-logo.png" alt="Sikata United FC" className="w-10 h-10 rounded-full object-cover" />
-              <div>
-                <p className="font-bold">SIKATA UNITED FC</p>
-                <p className="text-white/50 text-xs">Bungoma, Kenya</p>
-              </div>
-            </div>
-            <p className="text-white/50 text-sm">
-              Building champions on and off the pitch since 2011.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
-            <div className="space-y-2 text-sm text-white/60">
-              <Link to="/gallery" className="block hover:text-[#f4d03f] transition-colors">Gallery</Link>
-              <Link to="/fixtures" className="block hover:text-[#f4d03f] transition-colors">Fixtures</Link>
-              <Link to="/players" className="block hover:text-[#f4d03f] transition-colors">Players</Link>
-              <Link to="/support" className="block hover:text-[#f4d03f] transition-colors">Support Us</Link>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4">Contact</h4>
-            <div className="space-y-2 text-sm text-white/60">
-              <p>Bungoma, Kenya</p>
-              <p>sikatadecimalunited@gmail.com</p>
-            </div>
-          </div>
-        </div>
-        <div className="pt-8 border-t border-green-900/30 text-center text-white/40 text-sm">
-          © 2026 Sikata United FC. All rights reserved.
-        </div>
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        <p className="text-white/60">&copy; 2024 Sikata United FC. All rights reserved.</p>
       </div>
     </footer>
   );
 }
-
-// Main App with Router
-function App() {
-  return (
-    <Router>
-      <div className="min-h-screen bg-[#0a0a0a] text-white">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/fixtures" element={<Fixtures />} />
-          <Route path="/players" element={<Players />} />
-          <Route path="/support" element={<Support />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
-  );
-}
-
-export default App;

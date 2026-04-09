@@ -1,3 +1,6 @@
+// Sikata United FC - Main JavaScript File
+// Handles mobile menu, dropdowns, slideshow, gallery interactions, and contact form
+
 // ── Mobile navigation ────────────────────────────────────────
 function toggleMenu() {
   const nav   = document.querySelector('.nav-links');
@@ -5,7 +8,7 @@ function toggleMenu() {
   const open  = nav.classList.toggle('nav-open');
 
   // Animate hamburger → X
-  btn.classList.toggle('menu-open', open);
+  if (btn) btn.classList.toggle('menu-open', open);
 
   // Prevent body scroll while menu is open
   document.body.style.overflow = open ? 'hidden' : '';
@@ -13,10 +16,19 @@ function toggleMenu() {
 
 // Close menu when any nav link is tapped
 document.addEventListener('DOMContentLoaded', function () {
+  // Mobile menu button event listener
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', toggleMenu);
+  }
+  
+  // Close menu on nav link click
   document.querySelectorAll('.nav-links a').forEach(function (link) {
     link.addEventListener('click', function () {
-      document.querySelector('.nav-links').classList.remove('nav-open');
-      document.querySelector('.mobile-menu-btn').classList.remove('menu-open');
+      const nav = document.querySelector('.nav-links');
+      const btn = document.querySelector('.mobile-menu-btn');
+      if (nav) nav.classList.remove('nav-open');
+      if (btn) btn.classList.remove('menu-open');
       document.body.style.overflow = '';
     });
   });
@@ -25,12 +37,42 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('click', function (e) {
     const nav = document.querySelector('.nav-links');
     const btn = document.querySelector('.mobile-menu-btn');
-    if (nav.classList.contains('nav-open') &&
+    if (nav && nav.classList.contains('nav-open') &&
         !nav.contains(e.target) &&
-        !btn.contains(e.target)) {
+        btn && !btn.contains(e.target)) {
       nav.classList.remove('nav-open');
       btn.classList.remove('menu-open');
       document.body.style.overflow = '';
+    }
+  });
+});
+
+// ── Dropdown for mobile (touch friendly) ─────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(drop => {
+    const btn = drop.querySelector('.dropbtn');
+    if (btn) {
+      btn.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Close other dropdowns
+          dropdowns.forEach(d => {
+            if (d !== drop) d.classList.remove('active');
+          });
+          drop.classList.toggle('active');
+        }
+      });
+    }
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+      dropdowns.forEach(drop => {
+        drop.classList.remove('active');
+      });
     }
   });
 });
@@ -50,54 +92,69 @@ document.addEventListener('DOMContentLoaded', function () {
   // Kick off — first slide already has .active in HTML
   setInterval(next, 4000);
 })();
-// Smooth scroll for navigation links
+
+// ── Smooth scroll for navigation links ───────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
+    // Don't interfere with dropdown toggles on mobile
+    if (this.classList.contains('dropbtn')) return;
+    
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    const targetId = this.getAttribute('href');
+    if (targetId === '#') return;
+    
+    const target = document.querySelector(targetId);
     if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 70;
+      const targetPosition = target.offsetTop - navbarHeight;
+      
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
       });
     }
   });
 });
 
-// Navbar background on scroll
+// ── Navbar background on scroll ──────────────────────────────
 window.addEventListener('scroll', () => {
   const navbar = document.querySelector('.navbar');
-  if (window.scrollY > 50) {
-    navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-  } else {
-    navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+  if (navbar) {
+    if (window.scrollY > 50) {
+      navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+      navbar.style.backdropFilter = 'blur(10px)';
+    } else {
+      navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+    }
   }
 });
 
-// Active nav link on scroll
+// ── Active nav link on scroll ────────────────────────────────
 const sections = document.querySelectorAll('section[id]');
-const navLinksAll = document.querySelectorAll('.nav-links a');
+const navLinksAll = document.querySelectorAll('.nav-links a:not(.dropbtn)');
 
 window.addEventListener('scroll', () => {
   let current = '';
+  const scrollPosition = window.scrollY + 150;
   
   sections.forEach(section => {
     const sectionTop = section.offsetTop;
-    const sectionHeight = section.clientHeight;
-    if (scrollY >= sectionTop - 200) {
+    const sectionBottom = sectionTop + section.offsetHeight;
+    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
       current = section.getAttribute('id');
     }
   });
   
   navLinksAll.forEach(link => {
     link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) {
+    const href = link.getAttribute('href');
+    if (href && href.substring(1) === current) {
       link.classList.add('active');
     }
   });
 });
 
-// Load fixtures from localStorage
+// ── Load fixtures from localStorage ──────────────────────────
 function loadFixtures() {
   const stored = localStorage.getItem('sikata_fixtures');
   if (stored) {
@@ -112,7 +169,7 @@ function loadFixtures() {
   ];
 }
 
-// Render fixtures on the main page
+// ── Render fixtures on the main page ─────────────────────────
 function renderFixtures() {
   const fixtures = loadFixtures();
   const container = document.querySelector('.fixtures-list');
@@ -152,86 +209,147 @@ function renderFixtures() {
   }).join('');
 }
 
-// Form submission with contact email
-document.querySelectorAll('form').forEach(form => {
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
-    
-    // Get contact email from localStorage or use default
-    const contactEmail = localStorage.getItem('sikata_contact_email') || 'sikataunited@gmail.com';
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent('New Message from Sikata United Website');
-    const body = encodeURIComponent(
-      `Name: ${data.name || 'Not provided'}\n` +
-      `Email: ${data.email || 'Not provided'}\n\n` +
-      `Message:\n${data.message || 'No message'}`
-    );
-    
-    // Open email client
-    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
-    
-    // Show confirmation
-    alert('Thank you for your message! Your email client will open to send the message.');
-    
-    // Reset form
-    this.reset();
+// ── Form submission handling ─────────────────────────────────
+function handleFormSubmissions() {
+  const forms = document.querySelectorAll('form');
+  forms.forEach(form => {
+    // Remove any existing listeners to avoid duplicates
+    form.removeEventListener('submit', formSubmitHandler);
+    form.addEventListener('submit', formSubmitHandler);
   });
-});
+}
 
-// Initialize fixtures on page load
-document.addEventListener('DOMContentLoaded', function() {
-  renderFixtures();
-});
+function formSubmitHandler(e) {
+  e.preventDefault();
+  
+  // Get form data
+  const formData = new FormData(this);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  
+  // Get contact email from localStorage or use default
+  const contactEmail = localStorage.getItem('sikata_contact_email') || 'sikataunited@gmail.com';
+  
+  // Create mailto link with form data
+  const subject = encodeURIComponent('New Message from Sikata United Website');
+  const body = encodeURIComponent(
+    `Name: ${data.name || 'Not provided'}\n` +
+    `Email: ${data.email || 'Not provided'}\n\n` +
+    `Message:\n${data.message || 'No message'}`
+  );
+  
+  // Open email client
+  window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+  
+  // Show confirmation
+  alert('Thank you for your message! Your email client will open to send the message.');
+  
+  // Reset form
+  this.reset();
+}
 
-// Add animation on scroll (Intersection Observer)
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
+// ── Animation on scroll (Intersection Observer) ──────────────
+function initScrollAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  // Observe elements for animation
+  const animatedElements = document.querySelectorAll('.gallery-item, .player-card, .fixture-card');
+  animatedElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+  
+  // Add visible class styling
+  const style = document.createElement('style');
+  style.textContent = `
+    .gallery-item.visible,
+    .player-card.visible,
+    .fixture-card.visible {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
     }
+  `;
+  document.head.appendChild(style);
+}
+
+// ── Stagger animation delays ─────────────────────────────────
+function applyStaggerDelays() {
+  document.querySelectorAll('.gallery-item').forEach((item, i) => {
+    item.style.transitionDelay = `${i * 0.08}s`;
   });
-}, observerOptions);
 
-// Observe elements for animation
-document.querySelectorAll('.gallery-item, .player-card, .fixture-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.6s, transform 0.6s';
-  observer.observe(el);
-});
+  document.querySelectorAll('.player-card').forEach((item, i) => {
+    item.style.transitionDelay = `${(i % 4) * 0.1}s`;
+  });
+}
 
-// Add visible class styling via JS
-const style = document.createElement('style');
-style.textContent = `
-  .gallery-item.visible,
-  .player-card.visible,
-  .fixture-card.visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-`;
-document.head.appendChild(style);
+// ── Gallery item click handler (optional lightbox) ───────────
+function initGalleryClicks() {
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  galleryItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const img = this.querySelector('img');
+      if (img && img.src) {
+        // Simple alert showing image - can be expanded to lightbox
+        console.log('Gallery image clicked:', img.src);
+        // Optional: open in new tab or lightbox
+        // window.open(img.src, '_blank');
+      }
+    });
+  });
+}
 
-// Stagger animation delays
-document.querySelectorAll('.gallery-item').forEach((item, i) => {
-  item.style.transitionDelay = `${i * 0.1}s`;
-});
-
-document.querySelectorAll('.player-card').forEach((item, i) => {
-  item.style.transitionDelay = `${(i % 4) * 0.1}s`;
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// ── Initialize everything on DOM load ────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
   console.log('Sikata United FC website loaded');
+  
+  // Render fixtures
+  renderFixtures();
+  
+  // Handle form submissions
+  handleFormSubmissions();
+  
+  // Initialize scroll animations
+  initScrollAnimations();
+  
+  // Apply stagger delays
+  applyStaggerDelays();
+  
+  // Initialize gallery clicks
+  initGalleryClicks();
+  
+  // Fix hero section alignment on window resize
+  function fixHeroLayout() {
+    const hero = document.querySelector('.hero');
+    const heroImage = document.querySelector('.hero-image');
+    if (window.innerWidth <= 768 && heroImage) {
+      // Mobile layout is handled by CSS
+    }
+  }
+  
+  window.addEventListener('resize', fixHeroLayout);
+  fixHeroLayout();
 });
+
+// ── Export functions for potential use in admin panel ─────────
+window.sikataUnited = {
+  loadFixtures,
+  renderFixtures,
+  handleFormSubmissions,
+  toggleMenu
+};

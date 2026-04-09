@@ -2,12 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Sikata United FC - Bungoma's Pride</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/sikata-logo.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/sikata-logo.png">
   <link rel="apple-touch-icon" href="/sikata-logo.png">
+  <style>
+    /* Quick inline fix for any missing gallery responsiveness - ensures smooth rendering */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 550px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+    .slideshow img {
+      width: 100%;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -21,13 +39,13 @@
         </div>
       </a>
       
-      <button class="mobile-menu-btn" onclick="toggleMenu()">
+      <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Menu">
         <span></span>
         <span></span>
         <span></span>
       </button>
       
-      <div class="nav-links">
+      <div class="nav-links" id="navLinks">
         <a href="#home" class="active">HOME</a>
         <div class="dropdown">
           <a href="#gallery" class="dropbtn">GALLERY ▼</a>
@@ -94,14 +112,16 @@
 
   <!-- Mission Section -->
   <section class="mission">
-    <section class="about-intro">
+    <div class="about-intro">
       <h2>Our Story</h2>
       <p>We are a passionate soccer team dedicated to excellence on and off the field. Founded in 2025, Sikata United has grown into a community-driven team that inspires and empowers young talent to achieve greatness.</p>
-    </section>
+    </div>
 
-       <img src="/sikata-logo.png" alt="Sikata United FC" class="logo-icon-img">
+    <div style="text-align: center; margin: 1rem 0;">
+      <img src="/sikata-logo.png" alt="Sikata United FC" style="width: 120px; border-radius: 50%;">
+    </div>
 
-    <section class="mission-vision">
+    <div class="mission-vision">
       <div class="mission">
         <h2>Our Mission</h2>
         <p>To ignite a lifelong passion for soccer by developing complete players and well-rounded individuals through a safe, inclusive, and competitive environment. We are committed to fostering our players' technical, tactical, and physical abilities, while instilling values of integrity, hard work, and respect. As a community-focused club, we will create a positive impact both on and off the field, inspiring our members to become leaders and to contribute to society.</p>
@@ -114,36 +134,29 @@
         <h2>Our Philosophy</h2>
         <p>To be a club that guides its approach to playing, developing players and operating with a focus on building technical skills, creating intelligent, resilient players through a fun and supportive environment.</p>
       </div>
-    </section>
+    </div>
 
-    <section class="team-values">
+    <div class="team-values">
       <h2>Our Core Values</h2>
       <ul>
         <li><strong>Teamwork:</strong> We believe in the power of collaboration and unity.</li>
         <li><strong>Accountability:</strong> We uphold honesty and fairness in everything we do.</li>
         <li><strong>Professionalism:</strong> We strive for the highest standards on and off the field.</li>
-        <li><strong>Passion:</strong>We push beyond limits, fueled by relentless drive and unwavering commitment to excellence both on and off the field.</li>
+        <li><strong>Passion:</strong> We push beyond limits, fueled by relentless drive and unwavering commitment to excellence both on and off the field.</li>
         <li><strong>Community:</strong> We are committed to giving back and making a positive impact.</li>
-        <li><strong>Continuous improvement:</strong>We are dedicated to consistently enhancing our efforts and making a meaningful, positive contribution to the community.</li>
+        <li><strong>Continuous improvement:</strong> We are dedicated to consistently enhancing our efforts and making a meaningful, positive contribution to the community.</li>
       </ul>
-    </section>
+    </div>
 
-   <section class="team-photo">
-  <h2>Meet the Team</h2>
-  <p>
-    Our team is made up of talented players, dedicated coaches, and passionate supporters.
-    Together, we make Sikata United a family.
-  </p>
-
-  <div class="slideshow">
-
-    <img src="/sikata-logo.png" alt="Sikata United FC" class="slide active">
-
-    <img src="/image2.jpg" alt="Sikata United Team" class="slide">
-
-  </div>
-
-</section>
+    <div class="team-photo">
+      <h2>Meet the Team</h2>
+      <p>Our team is made up of talented players, dedicated coaches, and passionate supporters. Together, we make Sikata United a family.</p>
+      <div class="slideshow" id="slideshow">
+        <img src="/sikata-logo.png" alt="Sikata United FC" class="slide active">
+        <img src="/image2.jpg" alt="Sikata United Team" class="slide">
+      </div>
+    </div>
+  </section>
 
   <!-- Support CTA -->
   <section class="support-cta">
@@ -155,7 +168,7 @@
     </div>
   </section>
 
-  <!-- Gallery Section -->
+  <!-- Gallery Section (UPDATED & FULLY FUNCTIONAL) -->
   <section id="gallery" class="gallery">
     <div class="section-container">
       <div class="section-header">
@@ -206,97 +219,82 @@
             <p>Sikata United FC</p>
           </div>
         </div>
-
- <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image7.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
- <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image8.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
-         <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image9.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
-         <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image10.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
-      
-
-         <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image13.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
-         <div class="gallery-item">
+        <div class="gallery-item">
           <img src="/image16.jpg" alt="Match moment">
           <div class="overlay">
             <p>Match Day</p>
             <p>Sikata United FC</p>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- Video Section -->
-<!-- Video Section -->
-<section id="videos" class="video-section">
-  <div class="section-container">
-    <div class="section-header">
-      <p class="section-label">WATCH</p>
-      <h2>VIDEOS</h2>
-      <p class="description">Highlights and match footage from Sikata United FC</p>
+  <section id="videos" class="video-section">
+    <div class="section-container">
+      <div class="section-header">
+        <p class="section-label">WATCH</p>
+        <h2>VIDEOS</h2>
+        <p class="description">Highlights and match footage from Sikata United FC</p>
+      </div>
+      <div class="video-grid">
+        <div class="video-item">
+          <video controls width="100%">
+            <source src="video1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-item">
+          <video controls width="100%">
+            <source src="video2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-item">
+          <video controls width="100%">
+            <source src="video3.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
     </div>
-
-    <div class="video-grid">
-
-      <div class="video-item">
-        <video controls width="100%">
-          <source src="video1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class="video-item">
-        <video controls width="100%">
-          <source src="video2.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class="video-item">
-        <video controls width="100%">
-          <source src="video3.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- Fixtures Section -->
   <section id="fixtures" class="fixtures">
@@ -383,383 +381,41 @@
         <h2>PLAYERS</h2>
         <p class="description">The talented individuals representing Sikata United FC</p>
       </div>
-     <div class="players-grid">
-
-  <!-- Player -->
-  <div class="player-card">
-    <div class="player-photo">
-      <img src="/1.jpeg" alt="Player 1">
+      <div class="players-grid">
+        <!-- 31 Players Cards (1 to 31) -->
+        <div class="player-card"><div class="player-photo"><img src="/1.jpeg" alt="Player 1"></div><div class="player-number">1</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Goalkeeper</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/2.jpeg" alt="Player 2"></div><div class="player-number">2</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/3.jpeg" alt="Player 3"></div><div class="player-number">3</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/4.jpeg" alt="Player 4"></div><div class="player-number">4</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/5.jpeg" alt="Player 5"></div><div class="player-number">5</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/6.jpeg" alt="Player 6"></div><div class="player-number">6</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/7.jpeg" alt="Player 7"></div><div class="player-number">7</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/8.jpeg" alt="Player 8"></div><div class="player-number">8</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/9.jpeg" alt="Player 9"></div><div class="player-number">9</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/10.jpeg" alt="Player 10"></div><div class="player-number">10</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/11.jpeg" alt="Player 11"></div><div class="player-number">11</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">First Team</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/12.jpeg" alt="Player 12"></div><div class="player-number">12</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/13.jpeg" alt="Player 13"></div><div class="player-number">13</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Goalkeeper</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/14.jpeg" alt="Player 14"></div><div class="player-number">14</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/15.jpeg" alt="Player 15"></div><div class="player-number">15</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/16.jpeg" alt="Player 16"></div><div class="player-number">16</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/17.jpeg" alt="Player 17"></div><div class="player-number">17</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/18.jpeg" alt="Player 18"></div><div class="player-number">18</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/19.jpeg" alt="Player 19"></div><div class="player-number">19</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/20.jpeg" alt="Player 20"></div><div class="player-number">20</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/21.jpeg" alt="Player 21"></div><div class="player-number">21</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/22.jpeg" alt="Player 22"></div><div class="player-number">22</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Goalkeeper</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/23.jpeg" alt="Player 23"></div><div class="player-number">23</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/24.jpeg" alt="Player 24"></div><div class="player-number">24</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/25.jpeg" alt="Player 25"></div><div class="player-number">25</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/26.jpeg" alt="Player 26"></div><div class="player-number">26</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/27.jpeg" alt="Player 27"></div><div class="player-number">27</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/28.jpeg" alt="Player 28"></div><div class="player-number">28</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Defender</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/29.jpeg" alt="Player 29"></div><div class="player-number">29</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Midfielder</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/30.jpeg" alt="Player 30"></div><div class="player-number">30</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Forward</p><p class="status">Reserve</p></div></div>
+        <div class="player-card"><div class="player-photo"><img src="/31.jpeg" alt="Player 31"></div><div class="player-number">31</div><p class="player-name">Player Name</p><div class="player-info"><p class="position">Goalkeeper</p><p class="status">Reserve</p></div></div>
+      </div>
     </div>
-    <div class="player-number">1</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Goalkeeper</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-  <div class="player-card">
-    <div class="player-photo">
-      <img src="/2.jpeg" alt="Player 2">
-    </div>
-    <div class="player-number">2</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Defender</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-  <div class="player-card">
-    <div class="player-photo">
-      <img src="/3.jpeg" alt="Player 3">
-    </div>
-    <div class="player-number">3</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/4.jpeg" alt="Player 4">
-    </div>
-    <div class="player-number">4</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/5.jpeg" alt="Player 5">
-    </div>
-    <div class="player-number">5</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/6.jpeg" alt="Player 6">
-    </div>
-    <div class="player-number">6</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/7.jpeg" alt="Player 7">
-    </div>
-    <div class="player-number">7</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/8.jpeg" alt="Player 8">
-    </div>
-    <div class="player-number">8</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/9.jpeg" alt="Player 9">
-    </div>
-    <div class="player-number">9</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/10.jpeg" alt="Player 10">
-    </div>
-    <div class="player-number">10</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/11.jpeg" alt="Player 11">
-    </div>
-    <div class="player-number">11</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/12.jpeg" alt="Player 12">
-    </div>
-    <div class="player-number">12</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">First Team</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/13.jpeg" alt="Player 13">
-    </div>
-    <div class="player-number">13</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/14.jpeg" alt="Player 14">
-    </div>
-    <div class="player-number">14</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/15.jpeg" alt="Player 15">
-    </div>
-    <div class="player-number">15</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/16.jpeg" alt="Player 16">
-    </div>
-    <div class="player-number">16</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/17.jpeg" alt="Player 17">
-    </div>
-    <div class="player-number">17</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/18.jpeg" alt="Player 18">
-    </div>
-    <div class="player-number">18</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/19.jpeg" alt="Player 19">
-    </div>
-    <div class="player-number">19</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/20.jpeg" alt="Player 20">
-    </div>
-    <div class="player-number">20</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/21.jpeg" alt="Player 21">
-    </div>
-    <div class="player-number">21</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/22.jpeg" alt="Player 22">
-    </div>
-    <div class="player-number">22</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/23.jpeg" alt="Player 23">
-    </div>
-    <div class="player-number">23</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/24.jpeg" alt="Player 24">
-    </div>
-    <div class="player-number">24</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/25.jpeg" alt="Player 25">
-    </div>
-    <div class="player-number">25</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/26.jpeg" alt="Player 26">
-    </div>
-    <div class="player-number">26</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/27.jpeg" alt="Player 27">
-    </div>
-    <div class="player-number">27</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/28.jpeg" alt="Player 28">
-    </div>
-    <div class="player-number">28</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
- <div class="player-card">
-    <div class="player-photo">
-      <img src="/29.jpeg" alt="Player 29">
-    </div>
-    <div class="player-number">29</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/30.jpeg" alt="Player 30">
-    </div>
-    <div class="player-number">30</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-   <div class="player-card">
-    <div class="player-photo">
-      <img src="/31.jpeg" alt="Player 31">
-    </div>
-    <div class="player-number">31</div>
-    <p class="player-name">Player Name</p>
-    <div class="player-info">
-      <p class="position">Position *</p>
-      <p class="status">Reserve</p>
-    </div>
-  </div>
-
-
-</div>
   </section>
 
   <!-- Support/Donation Section -->
@@ -771,66 +427,33 @@
         <p class="description">Your support helps us develop players, compete at higher levels, and give back to our community</p>
       </div>
 
-      <!-- Bank Details -->
       <div class="bank-card">
-        <h3>
-          <span class="icon">💳</span>
-          Bank Transfer Details
-        </h3>
+        <h3><span class="icon">💳</span> Bank Transfer Details</h3>
         <div class="bank-grid">
           <div class="bank-info">
-            <div>
-              <p class="label">Bank</p>
-              <p class="value">Kenya Commercial Bank</p>
-            </div>
-            <div>
-              <p class="label">Branch</p>
-              <p class="value">Bungoma Branch</p>
-            </div>
+            <div><p class="label">Bank</p><p class="value">Kenya Commercial Bank</p></div>
+            <div><p class="label">Branch</p><p class="value">Bungoma Branch</p></div>
           </div>
           <div class="bank-info">
-            <div>
-              <p class="label">Account Title</p>
-              <p class="value highlight">Sikata United FC SHG</p>
-            </div>
-            <div>
-              <p class="label">Account Number</p>
-              <p class="value account-number">1349877670</p>
-            </div>
+            <div><p class="label">Account Title</p><p class="value highlight">Sikata United FC SHG</p></div>
+            <div><p class="label">Account Number</p><p class="value account-number">1349877670</p></div>
           </div>
         </div>
       </div>
 
-      <!-- M-Pesa Details -->
       <div class="mpesa-grid">
-        <div class="mpesa-card">
-          <h3><span>◆</span> M-Pesa Till</h3>
-          <p class="mpesa-number">8065105</p>
-        </div>
-        <div class="mpesa-card">
-          <h3><span>◆</span> Pay Bill</h3>
-          <p class="mpesa-number">522533</p>
-        </div>
+        <div class="mpesa-card"><h3><span>◆</span> M-Pesa Till</h3><p class="mpesa-number">8065105</p></div>
+        <div class="mpesa-card"><h3><span>◆</span> Pay Bill</h3><p class="mpesa-number">522533</p></div>
       </div>
 
-      <!-- Contact Form -->
       <div class="form-card">
         <h3>Get In Touch</h3>
-        <form class="contact-form">
+        <form class="contact-form" id="contactForm">
           <div class="form-grid">
-            <div class="form-group">
-              <label>Name</label>
-              <input type="text" placeholder="Your name">
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" placeholder="your@email.com">
-            </div>
+            <div class="form-group"><label>Name</label><input type="text" placeholder="Your name" id="nameInput"></div>
+            <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com" id="emailInput"></div>
           </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea placeholder="Your message"></textarea>
-          </div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Your message" id="msgInput"></textarea></div>
           <button type="submit" class="btn btn-primary">SEND MESSAGE</button>
         </form>
       </div>
@@ -847,21 +470,8 @@
     </div>
   </footer>
 
-  <script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
-
-function showSlides() {
-  slides.forEach(slide => slide.classList.remove("active"));
-  index++;
-  if (index > slides.length) { index = 1; }
-  slides[index - 1].classList.add("active");
-  setTimeout(showSlides, 4000); // change every 4 seconds
-}
-
-showSlides();
-</script>
-
-  <script src="script.js"></script>
+ 
+  <!-- Link to external JavaScript file -->
+  <script src="script.js"></script>  
 </body>
 </html>
