@@ -968,25 +968,27 @@ footer {
 }
 
 .footer-content .admin-link {
-  display: inline-block !important;
+  display: inline !important;
   visibility: visible !important;
-  background: var(--primary) !important;
-  color: var(--text) !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 4px !important;
+  background: none !important;
+  color: var(--text-muted) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
   margin-top: 0.5rem !important;
-  transition: all 0.3s !important;
-  font-weight: 600 !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0.1em !important;
+  transition: color 0.3s !important;
+  font-weight: normal !important;
+  font-size: inherit !important;
+  letter-spacing: normal !important;
   opacity: 1 !important;
   pointer-events: auto !important;
+  text-decoration: underline !important;
 }
 
 .footer-content .admin-link:hover {
-  background: var(--accent) !important;
-  transform: scale(1.05) !important;
-  color: white !important;
+  background: none !important;
+  transform: none !important;
+  color: var(--primary) !important;
+  text-decoration: none !important;
 }
 
 /* Animations */

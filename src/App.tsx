@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 // Club Colors - Premium Soccer Aesthetic
@@ -9,6 +9,17 @@ const COLORS = {
   dark: '#0a0a0a',
   card: '#111111',
 };
+
+// ScrollToTop Component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 // Navigation Component
 function Navbar() {
@@ -676,3 +687,28 @@ function Footer() {
     </footer>
   );
 }
+
+/* =========================
+APP
+========================= */
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
+        <ScrollToTop />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/fixtures" element={<Fixtures />} />
+          <Route path="/players" element={<Players />} />
+          <Route path="/support" element={<Support />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
